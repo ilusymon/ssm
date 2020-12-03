@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!--
+    &lt;!&ndash;静态工厂方法&ndash;&gt;
+    <bean id="person1" class="com.atguigu.factory.MyFactory" factory-method="creatPerson"/>
+
+    &lt;!&ndash;工厂实例方法&ndash;&gt;
+    <bean class="com.atguigu.factory.MyFactory" id="myFactory"/>
+    <bean id="person2" factory-bean="myFactory" factory-method="creatPerson2"/>
+
+    &lt;!&ndash;FactoryBean接口创建对象&ndash;&gt;
+    <bean id="person3" class="com.atguigu.factory.PersonFactoryBean"/>
+
+    -->
+
+
+    <!--继承Bean配置-->
+    <!--
+        abstract="true" 表示当前配置信息,只能用于继承,不能被实例化
+    -->
+    <!--<bean id="parent" class="com.atguigu.bean.Person"
+          p:id="9999" p:name="父配置" p:email="father@mail.com" abstract="true"/>
+    <bean id="person4" class="com.atguigu.bean.Person" parent="parent">
+        <property name="name" value="IOC之继承Bean配置"/>
+    </bean>-->
+
+    <!--
+        1 在Spring容器中.Bean对象的创建顺序默认是他们在配置文件中,从上到下的顺序决定.
+        2 可以在bean的配置上,使用属性depends-on表示前置创建
+    -->
+    <!--<bean id="a" class="com.atguigu.bean.A" depends-on="b"/>
+    <bean id="b" class="com.atguigu.bean.B" depends-on="c"/>
+    <bean id="c" class="com.atguigu.bean.C"/>-->
+
+
+    <!--IOC之Bean的单例和多例-->
+    <!--
+    scope表示配置 Bean的作用域
+        singleton           表示单例 (默认值)
+                                1 会跟着Spring容器一起被创建
+                                2 多次调用getBean()方法都返回同一个对象
+
+        prototype           表示多例
+                                1 不会跟着Spring容器一起被创建
+                                2 每次调用getBean() 方法都会返回一个新创建的对象
+
+       request                  表示一次请求内多次调用getBean都返回同一个对象
+       session                  表示一个会话内多次调用getBean都返回同一个对象
+
+-->
+   <!-- <bean id="carB" class="com.atguigu.bean.Car" scope="prototype">
+        <property name="name" value="迈巴赫"/>
+        <property name="id" value="888"/>
+    </bean>
+
+    &lt;!&ndash;基于xml配置文件的自动注入&ndash;&gt;
+    <bean id="car" class="com.atguigu.bean.Car" p:id="678">
+        <property name="name" value="布加迪"/>
+    </bean>
+    <bean id="carF" class="com.atguigu.bean.Car" p:id="679">
+        <property name="name" value="法拉利"/>
+    </bean>-->
+
+
+
+
+    <!---->
+    <bean id="person5" class="com.atguigu.bean.Person" p:id="5" p:name="Kaiser" init-method="init" destroy-method="destroy"/>
+
+    <bean class="com.atguigu.process.MyBeanPostProcessor"/>
+
+</beans>

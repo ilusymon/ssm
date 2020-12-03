@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.mapper.KeyMapper">
+
+    <resultMap id="getKeyByIdResultMap" type="com.atguigu.bean.Key">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <association property="lock" javaType="com.atguigu.bean.Lock">
+            <id column="lockId" property="id"/>
+            <result column="lockName" property="name"/>
+        </association>
+
+    </resultMap>
+
+    <select id="getKeyById" resultMap="getKeyByIdResultMap">
+        SELECT
+            t_key.*,
+            t_lock.id lockId,
+            t_lock.NAME lockName
+        FROM
+            t_key
+	    INNER JOIN
+	        t_lock
+	    ON
+	        t_key.lock_id = t_lock.id
+	    where t_key.id=#{id}
+    </select>
+
+
+    <resultMap id="queryKeyByIdResultMap" type="com.atguigu.bean.Key">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <association property="lock" javaType="com.atguigu.bean.Lock" column="lock_id"
+                     select="com.atguigu.mapper.LockMapper.selectLockById"/>
+    </resultMap>
+    <select id="queryKeyById" resultMap="queryKeyByIdResultMap">
+        select * from t_key where id=#{id}
+    </select>
+
+</mapper>

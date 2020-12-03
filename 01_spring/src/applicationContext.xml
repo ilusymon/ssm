@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+
+    <bean class="com.atguigu.bean.Car" id="car1">
+        <property name="id" value="1"/>
+        <property name="name" value="OOOO"/>
+    </bean>
+
+    <bean class="com.atguigu.bean.Car" id="car2">
+        <constructor-arg name="id" value="2"/>
+        <constructor-arg name="name" value="BWM"/>
+    </bean>
+
+    <bean class="com.atguigu.bean.Person" id="p1">
+        <property name="id" value="1"/>
+        <property name="name" value="Json"/>
+        <property name="email" value="1@gmail.com"/>
+        <property name="age" value="19"/>
+        <property name="car" ref="car2"/>
+    </bean>
+
+    <bean class="com.atguigu.bean.Person" id="p2">
+        <property name="id" value="9"/>
+        <property name="name" value="Json"/>
+        <property name="email" value="1@gmail.com"/>
+        <property name="age" value="19"/>
+        <property name="car">
+            <bean class="com.atguigu.bean.Car">
+                <property name="name" value="红旗"/>
+                <property name="id" value="666"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean class="com.atguigu.bean.Person" id="p3" p:id="90" p:name="jkl" p:email="abcdefg"/>
+
+    <bean class="com.atguigu.bean.Person" id="p4" p:id="4">
+        <property name="name">
+            <null></null>
+        </property>
+    </bean>
+
+    <bean class="com.atguigu.bean.Person" id="p5" p:id="5">
+        <property name="list">
+            <list>
+                <value>a</value>
+                <value>b</value>
+                <value>c</value>
+            </list>
+        </property>
+    </bean>
+    
+    <bean class="com.atguigu.bean.Person" id="p6" p:id="6" p:name="p6" p:car-ref="car1">
+        <property name="email" value="p6"/>
+        <property name="map">
+            <map>
+                <entry key="myCar" value-ref="car2"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean class="com.atguigu.bean.Person" p:id="6" id="p7">
+        <property name="prop">
+            <props>
+                <prop key="drive">com.mysql.jdbc.Driver</prop>
+            </props>
+        </property>
+    </bean>
+
+    <util:list id="list01">
+        <value>one</value>
+        <value>two</value>
+        <value>three</value>
+    </util:list>
+
+    <util:map id="map01">
+        <entry key="1th" value-ref="car1"/>
+        <entry key="2nd" value-ref="car2"/>
+    </util:map>
+
+
+    <bean id="p8" class="com.atguigu.bean.Person" p:id="8">
+        <property name="list" ref="list01"/>
+        <property name="map" ref="map01"/>
+    </bean>
+
+    <bean id="p9" class="com.atguigu.bean.Person" p:id="9">
+        <property name="car">
+            <bean class="com.atguigu.bean.Car">
+                <property name="name" value="奔驰"/>
+                <property name="id" value="3"/>
+            </bean>
+        </property>
+        <property name="car.name" value="拖拉机"/>
+    </bean>
+</beans>

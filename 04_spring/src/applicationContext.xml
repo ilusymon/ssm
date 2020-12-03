@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!-- 包扫描==因为使用了注解 -->
+    <context:component-scan base-package="com.atguigu.xml"></context:component-scan>
+    <!--
+        aop:aspectj-autoproxy是跟注解@Aspect一起组合使用
+    -->
+    <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+    <bean class="com.alibaba.druid.pool.DruidDataSource" id="dataSource">
+        <property name="username" value="${user}" />
+        <property name="password" value="${password}" />
+        <property name="url" value="${url}" />
+        <property name="driverClassName" value="${driverClassName}" />
+        <property name="initialSize" value="${initialSize}" />
+        <property name="maxActive" value="${maxActive}" />
+        <property name="maxWait" value="${maxWait}"/>
+    </bean>
+
+    <bean class="org.springframework.jdbc.core.JdbcTemplate" id="jdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!--事务管制-->
+    <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="dataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+
+    <!-- (tx:annotation-driven表示代理 + 注解@transactional)组合使用
+            transaction-manager="transactionManager" 配置使用哪个事务管理器
+            transaction-manager属性的默认值是: transactionManager
+    -->
+    <!--<tx:annotation-driven transaction-manager="dataSourceTransactionManager"/>-->
+
+
+    <tx:advice id="tx_advice" transaction-manager="dataSourceTransactionManager">
+        <tx:attributes>
+            <tx:method name="updateBook" propagation="REQUIRED"/>
+            <tx:method name="updateUser" propagation="REQUIRED"/>
+            <tx:method name="buyBook" propagation="REQUIRED"/>
+
+
+            <tx:method name="update*" propagation="REQUIRED" isolation="REPEATABLE_READ"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config>
+        <aop:advisor advice-ref="tx_advice" pointcut="execution(* com.atguigu.xml.service.*.*(..))"/>
+    </aop:config>
+</beans>

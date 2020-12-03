@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.mapper.UserMapper">
+
+
+
+    <select id="selectUserById" resultType="user">
+        select * from t_user where id=${param1}
+    </select>
+    <select id="selectUserByNameOrSex" resultType="user">
+        select * from t_user where last_name=#{lastname} or sex=#{sex}
+    </select>
+
+    <select id="selectUserByNameLike" resultType="user">
+        select * from t_user where last_name like concat("%",#{lastname},"%")
+    </select>
+
+    <select id="selectUserForMap" resultType="user">
+        select * from t_user where last_name=#{name} or sex=#{sex}
+    </select>
+</mapper>
